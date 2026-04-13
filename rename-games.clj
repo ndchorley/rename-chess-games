@@ -15,7 +15,12 @@
          (filter
           (fn [line] (str/includes? line "Date")))
          (first))]
-    date-line))
+    
+    (->
+     date-line
+     (str/replace "[Date " "")
+     (str/replace "]" "")
+     (str/replace "\"" ""))))
 
 (defn to-game [lines]
   {:date (extract-date lines) })
