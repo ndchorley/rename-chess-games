@@ -22,8 +22,21 @@
      (str/replace "]" "")
      (str/replace "\"" ""))))
 
+(defn parse-date [string]
+  (let [dotted-pattern
+        (java.time.format.DateTimeFormatter/ofPattern "yyyy.MM.dd")
+
+        dashed-pattern
+        (java.time.format.DateTimeFormatter/ofPattern "dd/MM/yyyy")]
+
+    (try
+      (java.time.LocalDate/parse string dotted-pattern)
+      (catch
+          java.time.format.DateTimeParseException exception
+        (java.time.LocalDate/parse string dashed-pattern)))))
+
 (defn to-game [lines]
-  {:date (extract-date lines) })
+  {:date (->> lines (extract-date) (parse-date)) })
 
 (defn parse-them [games]
   (map to-game games))
