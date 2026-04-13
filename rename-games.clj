@@ -9,9 +9,13 @@
   (map read-lines file-names))
 
 (defn extract-date [game]
-  (filter
-   (fn [line] (str/includes? line "Date"))
-   game))
+  (let [date-line
+        (->>
+         game
+         (filter
+          (fn [line] (str/includes? line "Date")))
+         (first))]
+    date-line))
 
 (defn to-game [lines]
   {:date (extract-date lines) })
