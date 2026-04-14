@@ -43,9 +43,15 @@
   (if (or (nil? string) (= string "-")) nil
       (Integer/parseInt string)))
 
+(defn extract-opponent [lines]
+  (let [white (value-for "White" lines)
+        black (value-for "Black" lines)]
+    (if (str/includes? white "Chorley") black white)))
+
 (defn to-game [lines]
   {:date (->> lines (value-for "Date") (parse-date))
-   :round (->> lines (value-for "Round") (parse-round))})
+   :round (->> lines (value-for "Round") (parse-round))
+   :opponent (extract-opponent lines)})
 
 (defn parse-them [games]
   (map to-game games))
