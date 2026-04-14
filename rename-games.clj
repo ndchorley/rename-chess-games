@@ -5,6 +5,9 @@
    (slurp file)
    (str/split-lines)))
 
+(defn read-game-list [file]
+  (read-lines file))
+
 (defn read-games [file-names]
   (map read-lines file-names))
 
@@ -49,6 +52,6 @@
 
 (->>
  "game-list"
- (read-lines)
+ (read-game-list)
  (read-games)
  (parse-them))
