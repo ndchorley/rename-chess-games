@@ -60,4 +60,5 @@
  "game-list"
  (read-game-list)
  (read-games)
- (parse-them))
+ (parse-them)
+ (sort-by :date))
