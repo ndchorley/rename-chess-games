@@ -8,17 +8,17 @@
 (defn read-games [file-names]
   (map read-lines file-names))
 
-(defn extract-date [game]
-  (let [date-line
+(defn value-for [field game]
+  (let [line
         (->>
          game
          (filter
-          (fn [line] (str/includes? line "Date")))
+          (fn [line] (str/includes? line field)))
          (first))]
     
     (->
-     date-line
-     (str/replace "[Date " "")
+     line
+     (str/replace (str "[" field " ") "")
      (str/replace "]" "")
      (str/replace "\"" ""))))
 
@@ -33,10 +33,10 @@
       (java.time.LocalDate/parse string dotted-pattern)
       (catch
           java.time.format.DateTimeParseException exception
-        (java.time.LocalDate/parse string dashed-pattern)))))
+          (java.time.LocalDate/parse string dashed-pattern)))))
 
 (defn to-game [lines]
-  {:date (->> lines (extract-date) (parse-date)) })
+  {:date (->> lines (value-for "Date") (parse-date)) })
 
 (defn parse-them [games]
   (map to-game games))
