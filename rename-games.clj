@@ -15,12 +15,13 @@
          (filter
           (fn [line] (str/includes? line field)))
          (first))]
-    
-    (->
-     line
-     (str/replace (str "[" field " ") "")
-     (str/replace "]" "")
-     (str/replace "\"" ""))))
+
+    (if-not (nil? line)
+      (->
+       line
+       (str/replace (str "[" field " ") "")
+       (str/replace "]" "")
+       (str/replace "\"" "")))))
 
 (defn parse-date [string]
   (let [dotted-pattern
@@ -35,8 +36,13 @@
           java.time.format.DateTimeParseException exception
           (java.time.LocalDate/parse string dashed-pattern)))))
 
+(defn parse-round [string]
+  (if (or (nil? string) (= string "-")) nil
+      (Integer/parseInt string)))
+
 (defn to-game [lines]
-  {:date (->> lines (value-for "Date") (parse-date)) })
+  {:date (->> lines (value-for "Date") (parse-date))
+   :round (->> lines (value-for "Round") (parse-round))})
 
 (defn parse-them [games]
   (map to-game games))
