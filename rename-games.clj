@@ -77,9 +77,13 @@
 (defn as-new-file-names [games]
   (map as-file-name games))
 
+(defn pair-with [old-file-names new-file-names]
+  (zipmap old-file-names new-file-names))
+
 (let [old-file-names (read-game-list "game-list")]
   (->>
    old-file-names
    (read-games)
    (parse-them)
-   (as-new-file-names)))
+   (as-new-file-names)
+   (pair-with old-file-names)))
