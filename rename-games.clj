@@ -2,6 +2,8 @@
  '[clojure.string :as str]
  '[clojure.java.io :as io])
 
+(import java.time.LocalDate)
+
 (defn read-lines [file]
   (->>
    (slurp file)
@@ -41,10 +43,10 @@
         (java.time.format.DateTimeFormatter/ofPattern "dd/MM/yyyy")]
 
     (try
-      (java.time.LocalDate/parse string dotted-pattern)
+      (LocalDate/parse string dotted-pattern)
       (catch
           java.time.format.DateTimeParseException exception
-          (java.time.LocalDate/parse string dashed-pattern)))))
+          (LocalDate/parse string dashed-pattern)))))
 
 (defn parse-round [string]
   (if (or (nil? string) (= string "-")) nil
