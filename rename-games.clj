@@ -11,13 +11,15 @@
 (defn read-games [file-names]
   (map read-lines file-names))
 
+(defn find-line-containing [field game]
+  (->>
+   game
+   (filter
+    (fn [line] (str/includes? line field)))
+   (first)))
+
 (defn value-for [field game]
-  (let [line
-        (->>
-         game
-         (filter
-          (fn [line] (str/includes? line field)))
-         (first))]
+  (let [line (find-line-containing field game)]
 
     (if-not (nil? line)
       (->
