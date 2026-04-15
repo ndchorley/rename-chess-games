@@ -80,10 +80,20 @@
 (defn pair-with [old-file-names new-file-names]
   (zipmap old-file-names new-file-names))
 
+(defn rename-them [old-to-new-names]
+  (->>
+   old-to-new-names
+   (run!
+    (fn [[old-name new-name]]
+      (let [old-file (clojure.java.io/as-file old-name)
+            new-file (clojure.java.io/as-file new-name)]
+        (.renameTo old-file new-file))))))
+
 (let [old-file-names (read-game-list "game-list")]
   (->>
    old-file-names
    (read-games)
    (parse-them)
    (as-new-file-names)
-   (pair-with old-file-names)))
+   (pair-with old-file-names)
+   (rename-them)))
