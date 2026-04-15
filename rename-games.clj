@@ -6,7 +6,7 @@
    (str/split-lines)))
 
 (defn read-game-list [file]
-  (read-lines file))
+  (into [] (read-lines file)))
 
 (defn read-games [file-names]
   (map read-lines file-names))
@@ -61,9 +61,8 @@
 (defn parse-them [games]
   (map to-game games))
 
-(->>
- "game-list"
- (read-game-list)
- (read-games)
- (parse-them)
- (sort-by :date))
+(let [old-file-names (read-game-list "game-list")]
+  (->>
+   old-file-names
+   (read-games)
+   (parse-them)))
