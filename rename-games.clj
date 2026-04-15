@@ -2,7 +2,10 @@
  '[clojure.string :as str]
  '[clojure.java.io :as io])
 
-(import java.time.LocalDate)
+(import
+ java.time.LocalDate
+ java.time.format.DateTimeFormatter
+ java.time.format.DateTimeParseException)
 
 (defn read-lines [file]
   (->>
@@ -37,10 +40,10 @@
 
 (defn parse-date [string]
   (let [dotted-pattern
-        (java.time.format.DateTimeFormatter/ofPattern "yyyy.MM.dd")
+        (DateTimeFormatter/ofPattern "yyyy.MM.dd")
 
         dashed-pattern
-        (java.time.format.DateTimeFormatter/ofPattern "dd/MM/yyyy")]
+        (DateTimeFormatter/ofPattern "dd/MM/yyyy")]
 
     (try
       (LocalDate/parse string dotted-pattern)
