@@ -61,8 +61,25 @@
 (defn parse-them [games]
   (map to-game games))
 
+(defn as-file-name [game]
+  (str
+   (:date game)
+
+   (if (not (nil? (:round game)))
+     (str "-r" (:round game))
+     "")
+
+   "-"
+   (str/replace (:opponent game) " " "-")
+
+   ".pgn"))
+
+(defn as-new-file-names [games]
+  (map as-file-name games))
+
 (let [old-file-names (read-game-list "game-list")]
   (->>
    old-file-names
    (read-games)
-   (parse-them)))
+   (parse-them)
+   (as-new-file-names)))
