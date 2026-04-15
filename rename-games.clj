@@ -18,15 +18,18 @@
     (fn [line] (str/includes? line field)))
    (first)))
 
+(defn remove-tag [line field]
+  (->
+   line
+   (str/replace (str "[" field " ") "")
+   (str/replace "]" "")
+   (str/replace "\"" "")))
+
 (defn value-for [field game]
   (let [line (find-line-containing field game)]
 
     (if-not (nil? line)
-      (->
-       line
-       (str/replace (str "[" field " ") "")
-       (str/replace "]" "")
-       (str/replace "\"" "")))))
+      (remove-tag line field))))
 
 (defn parse-date [string]
   (let [dotted-pattern
