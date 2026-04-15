@@ -1,4 +1,6 @@
-(require '[clojure.string :as str])
+(require
+ '[clojure.string :as str]
+ '[clojure.java.io :as io])
 
 (defn read-lines [file]
   (->>
@@ -85,8 +87,8 @@
    old-to-new-names
    (run!
     (fn [[old-name new-name]]
-      (let [old-file (clojure.java.io/as-file old-name)
-            new-file (clojure.java.io/as-file new-name)]
+      (let [old-file (io/as-file old-name)
+            new-file (io/as-file new-name)]
         (.renameTo old-file new-file))))))
 
 (let [old-file-names (read-game-list "game-list")]
