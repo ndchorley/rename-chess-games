@@ -93,13 +93,13 @@
   (zipmap old-file-names new-file-names))
 
 (defn rename-them [old-to-new-names]
-  (->>
-   old-to-new-names
-   (run!
-    (fn [[old-name new-name]]
-      (let [old-file (io/as-file old-name)
-            new-file (io/as-file new-name)]
-        (.renameTo old-file new-file))))))
+  (run!
+   (fn [[old-name new-name]]
+     (let [old-file (io/as-file old-name)
+           new-file (io/as-file new-name)]
+       (.renameTo old-file new-file)))
+
+   old-to-new-names))
 
 (let [old-file-names (read-game-list "game-list")]
   (->>
