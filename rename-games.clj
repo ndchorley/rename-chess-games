@@ -69,17 +69,22 @@
   (map to-game games))
 
 (defn as-file-name [game]
-  (str
-   (:date game)
+  (let [date-part (.toString (:date game))
 
-   (if (not (nil? (:round game)))
-     (str "-r" (:round game))
-     "")
+        round-part
+        (if (not (nil? (:round game)))
+          (str "-r" (:round game))
+          "")
 
-   "-"
-   (str/replace (:opponent game) " " "-")
+        opponent-part
+        (str/replace (:opponent game) " " "-")]
 
-   ".pgn"))
+    (str
+     date-part
+     round-part
+     "-"
+     opponent-part
+     ".pgn")))
 
 (defn as-new-file-names [games]
   (map as-file-name games))
